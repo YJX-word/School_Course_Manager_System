@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--绑定一个mapper接口-->
+<mapper namespace="com.yjx.System.mapper.course">
+    <select id="getCourseById" resultType="Course">
+        select * from s_course where id = #{id}
+    </select>
+    <select id="getAllCourse" resultType="Course">
+        select * from s_course
+    </select>
+
+    <update id="updateCourseHours" parameterType="Course">
+        update s_course
+        <set>
+            <if test="course.name != null">name=#{course.name},</if>
+            <if test="course.hours != null">hours=#{course.hours},</if>
+            <if test="course.sid != null">sid=#{course.sid},</if>
+        </set>
+        where id=#{course.id}
+    </update>
+
+    <insert id="insertCourse" parameterType="Course" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into s_course(name,hours,sid)
+        values (#{course.name},#{course.hours},#{course.sid})
+    </insert>
+
+    <select id="getAllAcademy" resultMap="academyResult">
+        select ac.*,sc.id scid,sc.name scname,hours,sid from s_academy ac
+        left join s_course sc on ac.id = sc.sid
+    </select>
+
+    <resultMap id="academyResult" type="Academy">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <collection property="courses" ofType="Course">
+            <id property="id" column="scid"/>
+            <result property="name" column="scname"/>
+            <result property="hours" column="hours"/>
+            <result property="sid" column="sid"/>
+        </collection>
+    </resultMap>
+
+    <delete id="deleteCourse">
+        delete from s_course where id = #{id}
+    </delete>
+
+</mapper>
