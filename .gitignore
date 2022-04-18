@@ -6,6 +6,10 @@ bin-release/
 
 # Other files and folders
 .settings/
+.idea/
+/endback/.idea/
+/endback/out/
+/endback/target/
 
 # Executables
 *.swf
