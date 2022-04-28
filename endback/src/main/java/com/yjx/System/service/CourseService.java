@@ -21,4 +21,5 @@ public interface CourseService {
     public int insertCourse(Course course);
     List<Academy> getAllAcademy();
     int deleteCourse(String id);
+    Course getCourseByName(String name);
 }

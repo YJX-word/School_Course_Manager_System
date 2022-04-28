@@ -6,8 +6,12 @@ import com.yjx.System.pojo.Course;
 import com.yjx.System.service.CourseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author: Yjx
@@ -17,7 +21,7 @@ import java.util.List;
  * @describe
  */
 @RestController
-@CrossOrigin("*")
+@CrossOrigin(allowedHeaders = "*",originPatterns = "http://localhost:8080",origins = "http://localhost:8080")
 public class CourseController {
 
     @Autowired
@@ -54,10 +58,14 @@ public class CourseController {
     }
 
     @PostMapping("/insertCourse")
-    public Result<Integer> insertCourse(@RequestBody Course course){
+    public Result<String> insertCourse(@RequestBody Course course){
         try {
-            int i = courseService.insertCourse(course);
-            return new Result<>(1,"succeed",i);
+            if(course.getPicUrl().equals("")){
+                course.setPicUrl("http://localhost:8000/images/01f40c3a-f678-47aa-bd61-2dce90808d0d.png");
+            }
+            courseService.insertCourse(course);
+            Course courseByName = courseService.getCourseByName(course.getName());
+            return new Result<>(1,"succeed",courseByName.getId());
         } catch (Exception e) {
             return new Result<>(0,e.getMessage(),null);
         }
@@ -81,5 +89,18 @@ public class CourseController {
         } catch (Exception e) {
             return new Result<>(0,e.getMessage(),null);
         }
+    }
+
+    @PostMapping("/pic_show")
+    public String insert_storeList(
+            @RequestParam("picFile") MultipartFile picFile
+    ){
+        String uuid = UUID.randomUUID().toString();
+        try {
+            picFile.transferTo(new File("E://pic_service//coursePic//"+uuid+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return uuid;
     }
 }

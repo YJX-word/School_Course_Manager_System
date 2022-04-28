@@ -22,4 +22,5 @@ public interface course {
     int insertCourse(@Param("course") Course course);
     List<Academy> getAllAcademy();
     int deleteCourse(@Param("id") String id);
+    Course getCourseByName(@Param("name") String name);
 }

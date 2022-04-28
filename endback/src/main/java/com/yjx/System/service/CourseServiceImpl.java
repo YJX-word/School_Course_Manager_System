@@ -50,4 +50,9 @@ public class CourseServiceImpl implements CourseService{
     public int deleteCourse(String id) {
         return course.deleteCourse(id);
     }
+
+    @Override
+    public Course getCourseByName(String name) {
+        return course.getCourseByName(name);
+    }
 }

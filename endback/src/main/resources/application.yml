@@ -19,3 +19,6 @@ spring:
 logging:
   level:
     com.yjx.System.mapper: DEBUG
+
+cbs:
+  imagesPath: file:/E:/pic_service/coursePic/

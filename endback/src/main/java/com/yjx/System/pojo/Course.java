@@ -19,4 +19,5 @@ public class Course {
     private String name;
     private String hours;
     private String sid;
+    private String picUrl;
 }

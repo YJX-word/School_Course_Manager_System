@@ -11,24 +11,29 @@
         select * from s_course
     </select>
 
+    <select id="getCourseByName" resultType="Course">
+        select * from s_course where `name` = #{name}
+    </select>
+
     <update id="updateCourseHours" parameterType="Course">
         update s_course
         <set>
             <if test="course.name != null">name=#{course.name},</if>
             <if test="course.hours != null">hours=#{course.hours},</if>
             <if test="course.sid != null">sid=#{course.sid},</if>
+            <if test="course.picUrl != null">picurl=#{course.picUrl},</if>
         </set>
         where id=#{course.id}
     </update>
 
     <insert id="insertCourse" parameterType="Course" useGeneratedKeys="true"
             keyProperty="id">
-        insert into s_course(name,hours,sid)
-        values (#{course.name},#{course.hours},#{course.sid})
+        insert into s_course(name,hours,sid,picurl)
+        values (#{course.name},#{course.hours},#{course.sid},#{course.picUrl})
     </insert>
 
     <select id="getAllAcademy" resultMap="academyResult">
-        select ac.*,sc.id scid,sc.name scname,hours,sid from s_academy ac
+        select ac.*,sc.id scid,sc.name scname,hours,sid,picurl from s_academy ac
         left join s_course sc on ac.id = sc.sid
     </select>
 
@@ -40,6 +45,7 @@
             <result property="name" column="scname"/>
             <result property="hours" column="hours"/>
             <result property="sid" column="sid"/>
+            <result property="picUrl" column="picurl"/>
         </collection>
     </resultMap>
 
